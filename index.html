@@ -3,16 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fateme Pasandide — Backend Developer</title>
+  <title>fatemeh@dev:~$</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+
     :root {
-      --bg: #0d0d0d;
-      --surface: #141414;
-      --border: #222;
-      --text: #c9c9c9;
-      --muted: #555;
-      --green: #4af78a;
-      --font-mono: "Courier New", Courier, monospace;
+      --bg: #0a0a0a;
+      --surface: #111;
+      --border: #1f1f1f;
+      --text: #b0b0b0;
+      --muted: #444;
+      --green: #39ff14;
+      --green-dim: #1a7a09;
+      --amber: #ffb000;
+      --cyan: #00e5ff;
+      --red: #ff4444;
+      --font: 'Share Tech Mono', monospace;
+      --font-big: 'VT323', monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,189 +27,369 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: var(--font-mono);
+      font-family: var(--font);
       font-size: 14px;
-      line-height: 1.8;
-      padding: 3rem 1.5rem;
-      max-width: 720px;
+      line-height: 1.7;
+      padding: 2rem 1.5rem 4rem;
+      max-width: 780px;
       margin: 0 auto;
     }
 
-    /* ── Prompt line ── */
-    .prompt::before {
-      content: "$ ";
-      color: var(--green);
+    /* scanline overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.07) 2px,
+        rgba(0,0,0,0.07) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
     }
 
-    /* ── Header ── */
-    header {
-      margin-bottom: 3rem;
-    }
-
-    header .name {
-      font-size: 1.6rem;
-      color: #fff;
-      letter-spacing: 0.04em;
-    }
-
-    header .role {
-      color: var(--green);
-      margin-top: 0.2rem;
-    }
-
-    header .links {
-      margin-top: 1rem;
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    header .links a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    header .links a:hover { color: var(--green); }
-
-    /* ── Sections ── */
-    section {
+    /* ── BOOT SEQUENCE ── */
+    #boot {
       margin-bottom: 2.5rem;
-      border-top: 1px solid var(--border);
-      padding-top: 1.5rem;
-    }
-
-    section h2 {
-      color: var(--muted);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    /* ── Skills grid ── */
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .tag {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.2rem 0.6rem;
+      color: var(--green-dim);
       font-size: 0.8rem;
     }
+    #boot .ok { color: var(--green); }
+    #boot .warn { color: var(--amber); }
 
-    /* ── Experience entries ── */
-    .entry { margin-bottom: 1.4rem; }
-    .entry-header {
+    /* ── ASCII NAME ── */
+    .ascii-name {
+      font-family: var(--font-big);
+      font-size: 3.2rem;
+      color: var(--green);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      text-shadow: 0 0 10px var(--green);
+      margin-bottom: 0.3rem;
+    }
+
+    .role {
+      color: var(--amber);
+      font-size: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+    .role span { color: var(--muted); }
+
+    /* ── PROMPT ── */
+    .prompt {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .prompt .user  { color: var(--green); }
+    .prompt .host  { color: var(--cyan); }
+    .prompt .path  { color: var(--amber); }
+    .prompt .cursor {
+      display: inline-block;
+      width: 8px; height: 14px;
+      background: var(--green);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── LINKS ── */
+    .links {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+      font-size: 0.82rem;
+    }
+    .links a {
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+    .links a::before { content: '→ '; color: var(--muted); }
+    .links a:hover { border-color: var(--cyan); }
+
+    /* ── SECTIONS ── */
+    section { margin-bottom: 2.4rem; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+      color: var(--amber);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-header .cmd { color: var(--green); }
+
+    /* ── SUMMARY ── */
+    .summary {
+      border-left: 2px solid var(--green-dim);
+      padding-left: 1rem;
+      color: var(--text);
+    }
+
+    /* ── SKILLS ── */
+    .skill-group { margin-bottom: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: baseline; }
+    .skill-label { color: var(--muted); min-width: 110px; font-size: 0.78rem; }
+    .tag {
+      background: transparent;
+      border: 1px solid var(--green-dim);
+      color: var(--green);
+      padding: 0.1rem 0.5rem;
+      font-size: 0.78rem;
+      font-family: var(--font);
+      transition: background 0.15s;
+    }
+    .tag:hover { background: var(--green-dim); }
+
+    /* ── EXPERIENCE ── */
+    .entry { margin-bottom: 1.6rem; }
+    .entry-top {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 0.2rem;
+      margin-bottom: 0.1rem;
     }
-    .entry-title { color: #fff; }
-    .entry-date  { color: var(--muted); font-size: 0.8rem; }
-    .entry-sub   { color: var(--green); font-size: 0.85rem; margin-bottom: 0.4rem; }
-    .entry p     { color: var(--text); }
+    .entry-title { color: #fff; font-size: 0.95rem; }
+    .entry-date  { color: var(--muted); font-size: 0.78rem; }
+    .entry-company { color: var(--cyan); font-size: 0.82rem; margin-bottom: 0.5rem; }
+    .entry ul { list-style: none; padding: 0; }
+    .entry ul li {
+      color: var(--text);
+      padding-left: 1.2rem;
+      position: relative;
+      margin-bottom: 0.2rem;
+      font-size: 0.85rem;
+    }
+    .entry ul li::before { content: '▸ '; color: var(--green-dim); position: absolute; left: 0; }
 
-    /* ── Download button ── */
+    /* ── CERTS ── */
+    .cert { margin-bottom: 0.4rem; font-size: 0.85rem; }
+    .cert .cert-name { color: var(--text); }
+    .cert .cert-by   { color: var(--muted); font-size: 0.78rem; }
+
+    /* ── CV DOWNLOAD ── */
+    .cv-section { text-align: left; }
     .cv-btn {
       display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.55rem 1.2rem;
+      margin-top: 0.8rem;
+      padding: 0.6rem 1.4rem;
       border: 1px solid var(--green);
       color: var(--green);
       text-decoration: none;
-      font-family: var(--font-mono);
+      font-family: var(--font);
       font-size: 0.85rem;
-      transition: background 0.15s, color 0.15s;
+      transition: all 0.15s;
+      text-shadow: 0 0 8px var(--green);
+      box-shadow: 0 0 8px var(--green-dim);
     }
     .cv-btn:hover {
       background: var(--green);
       color: #000;
+      box-shadow: 0 0 20px var(--green);
     }
-    .cv-btn::before { content: "↓ "; }
+    .cv-btn::before { content: '$ wget '; color: var(--muted); }
 
-    /* ── Footer ── */
+    /* ── FOOTER ── */
     footer {
-      margin-top: 4rem;
+      margin-top: 3rem;
       border-top: 1px solid var(--border);
       padding-top: 1rem;
-      color: var(--muted);
       font-size: 0.75rem;
+      color: var(--muted);
     }
+    footer .uptime { color: var(--green-dim); }
   </style>
 </head>
 <body>
 
-  <header>
-    <p class="prompt name">Your Name</p>
-    <p class="role">backend developer</p>
-    <nav class="links">
-      <a href="mailto:you@example.com">you@example.com</a>
-      <a href="https://github.com/yourusername" target="_blank">github</a>
-      <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin</a>
-    </nav>
-  </header>
+  <div id="boot">
+    <div>BIOS v2.0 — loading <span class="ok">[OK]</span></div>
+    <div>Mounting /home/fatemeh ... <span class="ok">[OK]</span></div>
+    <div>Loading Python runtime ... <span class="ok">[OK]</span></div>
+    <div>Connecting to PostgreSQL ... <span class="ok">[OK]</span></div>
+    <div>Starting Django ... <span class="ok">[OK]</span></div>
+    <div>Checking frontend ... <span class="warn">[SKIPPED — not my problem]</span></div>
+  </div>
+
+  <div class="ascii-name">FATEMEH.EXE</div>
+  <div class="role">Software Engineer <span>//</span> Python · Django · Backend</div>
+
+  <div class="prompt">
+    <span class="user">fatemeh</span><span style="color:var(--muted)">@</span><span class="host">dev</span><span style="color:var(--muted)">:</span><span class="path">~/production</span><span style="color:var(--muted)">$</span>
+    <span style="color:var(--text)">cat about.txt</span>
+    <span class="cursor"></span>
+  </div>
+
+  <nav class="links">
+    <a href="mailto:fateme.psn@gmail.com">fateme.psn@gmail.com</a>
+    <a href="https://github.com/fatemepasandide" target="_blank">github/fatemepasandide</a>
+    <a href="https://linkedin.com/in/fatemepasandide" target="_blank">linkedin</a>
+    <a href="tel:+989379868801">+98 937 986 8801</a>
+  </nav>
 
   <section>
-    <h2>About</h2>
-    <p>
-      I build reliable, scalable systems that power things quietly in the background.
-      Focused on clean APIs, solid data models, and infrastructure that doesn't wake people up at 3 am.
+    <div class="section-header"><span class="cmd">cat</span> summary.txt</div>
+    <p class="summary">
+      Backend Software Engineer with 4+ years of experience building scalable web apps using Python, Django, DRF, and microservice architectures.
+      I care about software architecture, distributed systems, and writing code that doesn't break at 3 AM.
+      Passionate about clean APIs, solid data models, and things that actually work in production.
     </p>
   </section>
 
   <section>
-    <h2>Stack</h2>
-    <div class="skills">
+    <div class="section-header"><span class="cmd">cat</span> skills.json</div>
+
+    <div class="skill-group">
+      <span class="skill-label">backend</span>
+      <span class="tag">Django</span>
+      <span class="tag">DRF</span>
+      <span class="tag">FastAPI</span>
       <span class="tag">Python</span>
-      <span class="tag">Go</span>
+    </div>
+    <div class="skill-group">
+      <span class="skill-label">database</span>
       <span class="tag">PostgreSQL</span>
+      <span class="tag">MySQL</span>
+      <span class="tag">SQL Server</span>
       <span class="tag">Redis</span>
+      <span class="tag">SQLite</span>
+    </div>
+    <div class="skill-group">
+      <span class="skill-label">devops & ci/cd</span>
       <span class="tag">Docker</span>
-      <span class="tag">Kubernetes</span>
-      <span class="tag">REST</span>
-      <span class="tag">gRPC</span>
-      <span class="tag">AWS</span>
-      <span class="tag">Linux</span>
-      <span class="tag">Git</span>
+      <span class="tag">Jenkins</span>
+      <span class="tag">ArgoCD</span>
+      <span class="tag">GitHub Actions</span>
+      <span class="tag">Sentry</span>
+    </div>
+    <div class="skill-group">
+      <span class="skill-label">architecture</span>
+      <span class="tag">Microservices</span>
+      <span class="tag">Monolithic</span>
+      <span class="tag">SOLID</span>
+      <span class="tag">DRY</span>
+    </div>
+    <div class="skill-group">
+      <span class="skill-label">testing</span>
+      <span class="tag">UnitTest</span>
+      <span class="tag">Locust</span>
     </div>
   </section>
 
   <section>
-    <h2>Experience</h2>
+    <div class="section-header"><span class="cmd">git log</span> --oneline experience</div>
 
     <div class="entry">
-      <div class="entry-header">
-        <span class="entry-title">Senior Backend Engineer</span>
-        <span class="entry-date">2022 — present</span>
+      <div class="entry-top">
+        <span class="entry-title">Software Engineer</span>
+        <span class="entry-date">05/2022 – Present</span>
       </div>
-      <p class="entry-sub">Company Name</p>
-      <p>Designed and maintained microservices handling 50k+ req/s. Led migration from monolith to event-driven architecture using Kafka.</p>
+      <div class="entry-company">Rayan Bours Co. · Tehran, Iran</div>
+      <ul>
+        <li>Engineered high-performance web apps using Django; pushed test coverage to 80%</li>
+        <li>Killed N+1 query issues dead — database load dropped, response times improved</li>
+        <li>Architected workflow-driven apps with Viewflow (BPMN), automating task routing across 4 teams</li>
+        <li>Built a reusable Python validation package that eliminated duplicated logic across all projects</li>
+        <li>Led data migrations of thousands of entries without losing a single row</li>
+        <li>Developed a centralized user management & permission system used across multiple departments</li>
+        <li>Refactored legacy code that probably had feelings — reduced redundancies, cut maintenance costs</li>
+      </ul>
     </div>
 
     <div class="entry">
-      <div class="entry-header">
-        <span class="entry-title">Backend Developer</span>
-        <span class="entry-date">2019 — 2022</span>
+      <div class="entry-top">
+        <span class="entry-title">Python Developer</span>
+        <span class="entry-date">05/2021 – 05/2022</span>
       </div>
-      <p class="entry-sub">Another Company</p>
-      <p>Built internal APIs and data pipelines. Reduced average query time by 60% through indexing and query optimization.</p>
+      <div class="entry-company">Freelance · Tehran, Iran</div>
+      <ul>
+        <li>Built automated data pipelines via web scraping & API integrations</li>
+        <li>Designed automated trading strategies in MQL5 + Python — bots that actually made money</li>
+        <li>Analyzed and visualized data using NumPy, Matplotlib, Scikit-learn</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-top">
+        <span class="entry-title">Data Analyst</span>
+        <span class="entry-date">10/2020 – 05/2021</span>
+      </div>
+      <div class="entry-company">Amasys Co. · Tehran, Iran</div>
+      <ul>
+        <li>Built interactive dashboards and reports using Power BI</li>
+        <li>Used SSAS & SSIS for ETL pipelines — extracted, transformed, and survived</li>
+      </ul>
     </div>
 
   </section>
 
   <section>
-    <h2>Curriculum Vitae</h2>
-    <p>Full details of my experience, education, and projects.</p>
-    <a class="cv-btn" href="cv.pdf" download>download cv.pdf</a>
+    <div class="section-header"><span class="cmd">cat</span> education.txt</div>
+    <div class="entry">
+      <div class="entry-top">
+        <span class="entry-title">B.Sc. Computer Engineering</span>
+        <span class="entry-date">2016 – 2020</span>
+      </div>
+      <div class="entry-company">Semnan University · Semnan, Iran</div>
+      <ul>
+        <li>Final Project: Portfolio Risk Management System — Python + Statistical Analysis</li>
+        <li>Member of the Scientific Association of Computer Engineering</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header"><span class="cmd">ls</span> ~/certifications/</div>
+    <div class="cert">
+      <div class="cert-name">Unsupervised Learning, Recommenders, Reinforcement Learning</div>
+      <div class="cert-by">Stanford University · Coursera · 2024</div>
+    </div>
+    <div class="cert">
+      <div class="cert-name">Supervised Machine Learning: Regression and Classification</div>
+      <div class="cert-by">Stanford University · Coursera · 2024</div>
+    </div>
+    <div class="cert">
+      <div class="cert-name">Advanced Learning Algorithms</div>
+      <div class="cert-by">Stanford University & DeepLearning.AI · Coursera · 2024</div>
+    </div>
+    <div class="cert">
+      <div class="cert-name">Django Specialization</div>
+      <div class="cert-by">University of Michigan · Coursera · 2022</div>
+    </div>
+    <div class="cert">
+      <div class="cert-name">Design Patterns</div>
+      <div class="cert-by">University of Alberta · Coursera · 2022</div>
+    </div>
+  </section>
+
+  <section class="cv-section">
+    <div class="section-header"><span class="cmd">ls</span> ~/downloads/</div>
+    <p style="color:var(--muted); font-size:0.85rem;">Full details of my experience, projects, and certifications.</p>
+    <a class="cv-btn" href="Fatemeh_Pasandideh_v4_work-11.pdf" download>Fatemeh_Pasandideh_CV.pdf</a>
   </section>
 
   <footer>
-    <span class="prompt">echo "thanks for stopping by"</span>
+    <span class="uptime">fatemeh@dev:~$ uptime</span><br>
+    4+ years in production · 0 critical incidents blamed on me · still compiling ☕
   </footer>
 
 </body>
